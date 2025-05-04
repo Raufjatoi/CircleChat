@@ -10,6 +10,7 @@ import CharacterSelect from "@/components/CharacterSelect";
 import Footer from "@/components/Footer";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { CharacterContext } from "@/contexts/CharacterContext";
+import VoiceSettings from "@/components/VoiceSettings";
 
 // Number of previous messages to include when memory is enabled
 const MEMORY_MESSAGE_COUNT = 5;
@@ -25,6 +26,7 @@ const Index = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
   const isMobile = useIsMobile();
+  const [isVoiceEnabled, setIsVoiceEnabled] = useState(true);
 
   useEffect(() => {
     if (!isApiKeySet) {
@@ -167,6 +169,7 @@ const Index = () => {
                 <ChatMessage 
                   key={message.id} 
                   message={message}
+                  isVoiceEnabled={isVoiceEnabled}
                 />
               ))}
               <div ref={messagesEndRef} />
@@ -174,6 +177,14 @@ const Index = () => {
           )}
           
           {/* Chat Input */}
+          <div className="flex items-center justify-between mb-2">
+            <VoiceSettings 
+              characterId={character.id}
+              isVoiceEnabled={isVoiceEnabled}
+              onToggleVoice={setIsVoiceEnabled}
+            />
+            {/* Other settings components can go here */}
+          </div>
           <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} />
         </div>
         
@@ -185,6 +196,8 @@ const Index = () => {
 };
 
 export default Index;
+
+
 
 
 
